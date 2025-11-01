@@ -17,12 +17,17 @@ public class CellMap {
 
     public int putEntity(Entity entity, int x, int y) {
         if (!(y < 0 || y >= map.length) && !(x < 0 || x >= map[y].length)) {
+            entity.setX(x); entity.setY(y);
             map[y][x].add(entity);
             return 0;
         } else {
             return 1;
         }
 
+    }
+
+    public ArrayList<Entity> getEntitiesOnCoordinates(int x, int y) {
+        return map[y][x];
     }
 
     public void moveEntity(Entity entity, int direction)
@@ -33,23 +38,19 @@ public class CellMap {
             // put in another cell array
             if (direction == 1){
                 if(putEntity(entity, entity.getX()+1, entity.getY()) == 0) {
-                    map[entity.getY()][entity.getX()].remove(entity);
-                    entity.moveHorizontally(1);
+                    map[entity.getY()][entity.getX()-1].remove(entity);
                 }
             } else if (direction == -1) {
                 if (putEntity(entity, entity.getX()-1, entity.getY()) == 0) {
-                    map[entity.getY()][entity.getX()].remove(entity);
-                    entity.moveHorizontally(-1);
+                    map[entity.getY()][entity.getX()+1].remove(entity);
                 }
             } else if (direction == 2) {
                 if (putEntity(entity, entity.getX(), entity.getY() + 1) == 0) {
-                    map[entity.getY()][entity.getX()].remove(entity);
-                    entity.moveVertically(1);
+                    map[entity.getY() - 1][entity.getX()].remove(entity);
                 }
             } else if (direction == -2) {
                 if (putEntity(entity, entity.getX(), entity.getY() - 1) == 0) {
-                    map[entity.getY()][entity.getX()].remove(entity);
-                    entity.moveVertically(-1);
+                    map[entity.getY() + 1][entity.getX()].remove(entity);
                 }
 
             }

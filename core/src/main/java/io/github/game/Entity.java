@@ -9,12 +9,14 @@ public class Entity {
     private Sprite sprite;
     private int x;
     private int y;
+    private boolean isCollidable;
 
-    public Entity(int id, int health, Sprite sprite)
+    public Entity(int id, int health, boolean isCollidable, Sprite sprite)
     {
         this.id = id;
         this.health = health;
         this.sprite = sprite;
+        this.isCollidable = isCollidable;
     }
 
     public Sprite getSprite() {
@@ -27,6 +29,14 @@ public class Entity {
 
     public int getX() {
         return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 
     public void moveHorizontally(int direction) {

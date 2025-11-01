@@ -11,28 +11,33 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import java.util.ArrayList;
+
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
     private FitViewport viewport;
     private Array<Entity> entities;
     private Entity player;
+    private Entity wall;
     private CellMap map;
     private final int worldWidth = 10;
-    private final int worldHeight = 6;
+    private final int worldHeight = 10;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
-        player = new Entity(1, 10, new Sprite(new Texture("player.png")));
+        player = new Entity(1, 10, false, new Sprite(new Texture("player.png")));
 
 
         viewport = new FitViewport(worldWidth, worldHeight);
 
         map = new CellMap(worldHeight, worldWidth);
         map.putEntity(player, 0, 0);
-        map.putEntity(new Entity(2, 100, new Sprite(new Texture("player.png"))), 0, 0);
 
+        for (int i = 0; i < worldWidth; i++) {
+            map.putEntity(new Entity(2, 1000, true, new Sprite(new Texture("wall.png"))), i, worldHeight - 1);
+        }
     }
 
     @Override
@@ -66,7 +71,17 @@ public class Main extends ApplicationAdapter {
         batch.begin();
         {
 
-            batch.draw(player.getSprite(), player.getX(), player.getY(), 1, 1);
+//            batch.draw(player.getSprite(), player.getX(), player.getY(), 1, 1);
+
+            for (int i = 0; i < worldHeight; i++) {
+                for (int j = 0; j < worldWidth; j++) {
+                    for (Entity entity : map.getEntitiesOnCoordinates(i, j)) {
+                        batch.draw(entity.getSprite(), entity.getX(), entity.getY(), 1, 1);
+                    }
+                }
+            }
+
+
         }
         batch.end();
     }
